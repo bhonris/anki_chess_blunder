@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div style="height:600px">
+    <iframe id="frame" src="https://lichess.org/embed/XIwZa926" title="W3Schools Free Online Web Tutorials"></iframe>
+    </div>
   </div>
 </template>
 
@@ -24,5 +26,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+#frame {
+   width: 100%;
+   height: 100%;
+   border: 1px solid black;
+   position: relative;
 }
 </style>
