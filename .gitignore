@@ -22,6 +22,3 @@ yarn-error.log*
 
 # bat file
 *.bat
-
-# lock file
-package-lock.json
