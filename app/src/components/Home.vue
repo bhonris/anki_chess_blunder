@@ -27,6 +27,7 @@ export default {
       }).then(response => {
         if (response.status === 200) {
           this.$router.push({path: '/main'})
+          console.log(response.data)
         } else {
           alert(response.data.username)
         }

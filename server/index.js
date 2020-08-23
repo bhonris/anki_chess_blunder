@@ -6,17 +6,19 @@ const cors = require('cors');
 
 
 // TODO: get the username for the frontend to pass here
-const username = 'juanlu_herrero';
-const ids = getgameIDs(username);
+// const username = 'juanlu_herrero';
+// const ids = getgameIDs(username);
 
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
 app.use(cors());
-app.post("/test", (req, res) => {
+
+ app.post("/test", async (req, res) => {
   console.log(req.body)
-  res.json({username: req.body.username});
+  const games = await getgameIDs(req.body.username)
+  res.json({username: req.body.username, games})
 })
 
 app.post("/add", (req, res) => {
@@ -47,7 +49,13 @@ async function getgameIDs(username){
     chessGames.forEach(elt => {
       if (elt) { // checking if the string is empty.
         const parsedGame = JSON.parse(elt);
-        ids.push(parsedGame.id);
+        const white = parsedGame.players.white.user.id
+        const black = parsedGame.players.black.user.id
+        var color = ""
+        lowerCaseUsername = username.toLowerCase()
+        if (lowerCaseUsername===white) color = "white"
+        if (lowerCaseUsername===black) color = "black"
+        ids.push({id: parsedGame.id, moveNum: 3, color});
       }
     });
     console.log(ids);
