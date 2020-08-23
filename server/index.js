@@ -49,13 +49,19 @@ async function getgameIDs(username){
     chessGames.forEach(elt => {
       if (elt) { // checking if the string is empty.
         const parsedGame = JSON.parse(elt);
-        const white = parsedGame.players.white.user.id
-        const black = parsedGame.players.black.user.id
-        var color = ""
-        lowerCaseUsername = username.toLowerCase()
-        if (lowerCaseUsername===white) color = "white"
-        if (lowerCaseUsername===black) color = "black"
-        ids.push({id: parsedGame.id, moveNum: 3, color});
+        const white = parsedGame.players.white.user.id;
+        const black = parsedGame.players.black.user.id;
+        var color = "";
+        lowerCaseUsername = username.toLowerCase();
+        if (lowerCaseUsername===white) color = "white";
+        if (lowerCaseUsername===black) color = "black";
+        // for now only keeping track of first blunder per game
+        blunder = findBlunderedMoves(parsedGame, color)[0];
+        if(blunder !== undefined){
+          moveNum = blunder.moveNumber;
+          bestMove = blunder.bestMove;
+          ids.push({id: parsedGame.id, moveNum, bestMove, color});
+        }
       }
     });
     console.log(ids);
@@ -63,4 +69,24 @@ async function getgameIDs(username){
   }).catch(function (error) {
     console.log(error);
   });
+}
+
+// function to detect the user's blunder
+// returns an array of blundered move numbers
+function findBlunderedMoves(parsedGame, color){
+  let moveCount = 0;
+  let blunderedMoves = [];
+  parsedGame.analysis.forEach(anal => {
+    moveCount += 1;
+    if((moveCount%2 === 0 && color === 'black') || (moveCount%2 === 1 && color === 'white')){
+      if(anal.judgment !== undefined){
+        if(anal.judgment.name === 'Blunder'){
+          // should replace this with a regex or figure out what the 'best' value means
+          bestMove = anal.judgment.comment.split(' ')[1];
+          blunderedMoves.push({moveNumber: moveCount, bestMove});
+        }
+      }
+    }
+  });
+  return blunderedMoves;
 }
