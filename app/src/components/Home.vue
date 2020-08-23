@@ -26,8 +26,8 @@ export default {
         data: {username}
       }).then(response => {
         if (response.status === 200) {
-          this.$router.push({path: '/main'})
-          console.log(response.data)
+          this.$router.push({name: 'main', params: {games: response.data.games}})
+          console.log(response.data.games)
         } else {
           alert(response.data.username)
         }

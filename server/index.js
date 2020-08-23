@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
  app.post("/test", async (req, res) => {
-  console.log(req.body)
+  console.log("In post req: " + req.body.username)
   const games = await getgameIDs(req.body.username)
   res.json({username: req.body.username, games})
 })

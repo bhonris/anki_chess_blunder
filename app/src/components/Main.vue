@@ -1,12 +1,23 @@
 <template>
   <div style="height:600px">
-    <iframe id="frame" src="https://lichess.org/embed/XIwZa926" title="W3Schools Free Online Web Tutorials"></iframe>
+    <iframe id="frame" :src="urlGenerator" title="W3Schools Free Online Web Tutorials"></iframe>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: "Main.vue"
+  name: "Main",
+  data: function () {
+    return {games: this.$route.params.games, currGame: 0}
+  },
+  computed: {
+    urlGenerator: function () {
+      const gamePos = this.games[this.currGame]
+      return `https://lichess.org/embed/${gamePos.id}/${gamePos.color}#${gamePos.moveNum}`
+    }
+  },
+  methods: {}
 }
 </script>
 
