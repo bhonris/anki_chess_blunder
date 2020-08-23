@@ -14,8 +14,14 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(cors());
-app.get("/test", (req, res) => {
-  res.send('Hello World A');
+app.post("/test", (req, res) => {
+  console.log(req.body)
+  res.json({username: req.body.username});
+})
+
+app.post("/add", (req, res) => {
+  console.log(req.body)
+  res.json({sum: req.body.num_one + req.body.num_two});
 })
 
 app.listen(3003, () => {
